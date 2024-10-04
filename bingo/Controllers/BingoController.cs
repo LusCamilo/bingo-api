@@ -1,6 +1,7 @@
+using bingo;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bingo.Controllers
+namespace Bingo.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -8,8 +9,8 @@ namespace bingo.Controllers
     {
         private const int MaxValue = 10;
         private const int MinValue = 1;
-        private static int? randomNumber = null;
-        private static readonly Random randNum = new();
+        private static int? _randomNumber = null;
+        private static readonly Random s_randNum = new();
         private readonly ILogger<BingoController> _logger;
 
         public BingoController(ILogger<BingoController> logger)
@@ -19,17 +20,17 @@ namespace bingo.Controllers
 
         private void SetPrevRandomNumber(int prevRandomNumber)
         {
-            randomNumber = prevRandomNumber;
+            _randomNumber = prevRandomNumber;
         }
 
         private int? GetPrevRandomNumber()
         {
-            return randomNumber;
+            return _randomNumber;
         }
 
         private static int GenerateRandomNumber()
         {
-            return randNum.Next(MinValue, MaxValue);
+            return s_randNum.Next(MinValue, MaxValue);
         }
 
         private bool CheckBingo(int randomNumber)
@@ -56,7 +57,6 @@ namespace bingo.Controllers
             }
             return false;
         }
-
 
         [HttpGet(Name = "GetBingo")]
         public BingoResponse Get()
